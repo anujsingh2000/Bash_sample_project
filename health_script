@@ -1,0 +1,44 @@
+# Script to do health-check of url and print their status
+
+## list of urls
+
+url_list=("https://www.amazon.com/" "https://www.flipkart.com" "https://www.zomato.com" "https://www.google.com") 
+
+declare -A failed_url_list 
+
+echo "Checking urls..."
+
+#Check each url using curl command
+
+for url in "${url_list[@]}"; do
+
+# using curl to get status code(silent,no output,only status code)
+status_code=$(curl -s -o /dev/null -w "%{http_code}" "${url}")
+
+if [[ $? -ne 0 ]];then
+  echo "Error loading the site,try again"
+  failed_url_list["${url}"]="Unreachable"
+  continue
+fi
+
+#Checking if site is working correctly
+
+if [[ "${status_code}" -eq 200 ]]; then
+  echo ""${url}" is working correctly"
+else
+  echo " $url is not reachable, getting "${status_code}" error "
+  failed_url_list["${url}"]="HTTP $status_code "
+fi
+
+done
+
+echo "Summary of failed urls"
+
+if [ "${#failed_url_list[@]}" -eq 0 ]; then
+  echo "All urls are working correctly"
+else
+  for i in "${!failed_url_list[@]}"; do
+      echo "$i"
+  done
+fi
+
