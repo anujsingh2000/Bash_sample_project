@@ -1,5 +1,5 @@
 #Script to check log file and found total error line in files.
-
+ 
 ## Taking filepath as input
 read -p "Enter filepath where to search for log files" log_file 
 

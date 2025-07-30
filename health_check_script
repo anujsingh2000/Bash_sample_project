@@ -1,5 +1,5 @@
 #Script to url health check status and provide HTTP Status Code.
-
+ 
 url_list=(
 "https://instagram.com"
 "https://www.github.com"
