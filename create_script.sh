@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 read -p "Name the script you want to create " script_name
 
 #Creating script with above name
