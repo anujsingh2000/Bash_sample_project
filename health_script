@@ -1,15 +1,13 @@
 # Script to do health-check of url and print their status
- 
 ## list of urls
 
-url_list=("https://www.amazon.com/" "https://www.flipkart.com" "https://www.zomato.com" "https://www.google.com") 
+url_list=( "https://www.glassdoor.in" "https://www.flipkart.com/" "https://naukri.com" "https://www.gfg.com" )
 
 declare -A failed_url_list 
 
 echo "Checking urls..."
 
 #Check each url using curl command
-
 for url in "${url_list[@]}"; do
 
 # using curl to get status code(silent,no output,only status code)
@@ -17,21 +15,28 @@ status_code=$(curl -s -o /dev/null -w "%{http_code}" "${url}")
 
 if [[ $? -ne 0 ]];then
   echo "Error loading the site,try again"
-  failed_url_list["${url}"]="Unreachable"
+  failed_url_list["${url}"]="Unreachable"   #Associative array, so storing value in key-value pair
   continue
 fi
 
-#Checking if site is working correctly
-
+#Checking site status based on response code
 if [[ "${status_code}" -eq 200 ]]; then
   echo ""${url}" is working correctly"
+elif [[ "${status_code}" -ge 300 && "${status_code}" -lt 400 ]]; then
+  echo "Redirection is applied, "${url}" is redirected"
+elif [[ "${status_code}" -ge 400 && "${status_code}" -lt 500 ]]; then
+  echo "Invalid request from client end, getting "${status_code}" response code for "${url}" "
+elif [[ "${status_code}" -ge 500 && "${status_code}" -lt 599 ]]; then
+  echo "Internal server error,getting "${status_code}" response code for "${url}" "
 else
-  echo " $url is not reachable, getting "${status_code}" error "
+  echo " "${url}" is not reachable, getting "${status_code}" response code "
   failed_url_list["${url}"]="HTTP $status_code "
 fi
 
 done
 
+echo 
+echo "----------------------"
 echo "Summary of failed urls"
 
 if [ "${#failed_url_list[@]}" -eq 0 ]; then
