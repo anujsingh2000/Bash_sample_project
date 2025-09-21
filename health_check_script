@@ -15,19 +15,19 @@ declare -a failed_urls=()
 echo -n "Checking urls..." 
 #Iteratin over each url to check status
 
-for url in "${url_list[@]"}; do
-  response=$(curl -s -o /dev/null -w "%{http_code}" "${url}")
+for url in ${url_list[@]}; do
+  response=$(curl -s -o /dev/null -w "%{http_code}" ${url})
   last_exit_code=$?
 
 	if [[ ${last_exit_code} -ne 0 ]];then
 		#reason of failure
-		error_reason=$(curl -s "$url" 2>&1 | head -n 1)
-		echo "Failed to load the site, $error_reason"
-		failed_urls+=("${url} -> ${error_reason}")
-	elif [[ "${response}" -eq 200 ]];then
-		echo "Site loaded successfully."
+		error_reason=$(curl -s $url 2>&1 | head -n 1)
+		echo "Failed to load the site, $error_reason "
+		failed_urls+=(" ${url} -> ${error_reason} ")
+	elif [[ $response -eq 200 ]];then
+		echo "site loaded successfully."
 	else
-		echo "Status ${response} "
+		echo "Status $response "
 		failed_urls+=("$url -> HTTP $response")
 	fi
 done
@@ -38,7 +38,7 @@ done
 #if [[ ${#failed_urls[@]} -eq 0 ]];then
 #       echo "All urls are working fine"
 #else
-#	for fd in "${failed_urls[@]}"; do
-#		echo "${fd}"
+#	for fd in ${failed_urls[@]}; do
+#		echo ${fd}
 #	done
 #fi
