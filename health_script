@@ -1,38 +1,37 @@
 # Script to do health-check of url and print their status
 ## list of urls
 
-url_list=( "https://www.glassdoor.in" "https://www.flipkart.com/" "https://naukri.com" "https://www.gfg.com" )
+url_list=( "https://www.glassdoor.in" "https://www.flipkart.com" "https://naukri.com" "https://www.gfg.com" )
 
 declare -A failed_url_list 
 
 echo "Checking urls..."
 
 #Check each url using curl command
-for url in "${url_list[@]}"; do
+for url in ${url_list[@]}; do
 
 # using curl to get status code(silent,no output,only status code)
-status_code=$(curl -s -o /dev/null -w "%{http_code}" "${url}")
-
-if [[ $? -ne 0 ]];then
-  echo "Error loading the site,try again"
-  failed_url_list["${url}"]="Unreachable"   #Associative array, so storing value in key-value pair
-  continue
-fi
+status_code=$(curl -s -o /dev/null -w "%{http_code}" -f --connect-timeout 5 "${url}" 2>/dev/null) || status_code=0
 
 #Checking site status based on response code
-if [[ "${status_code}" -eq 200 ]]; then
-  echo ""${url}" is working correctly"
-elif [[ "${status_code}" -ge 300 && "${status_code}" -lt 400 ]]; then
-  echo "Redirection is applied, "${url}" is redirected"
-elif [[ "${status_code}" -ge 400 && "${status_code}" -lt 500 ]]; then
-  echo "Invalid request from client end, getting "${status_code}" response code for "${url}" "
-elif [[ "${status_code}" -ge 500 && "${status_code}" -lt 599 ]]; then
-  echo "Internal server error,getting "${status_code}" response code for "${url}" "
+if [[ ${status_code} -eq 200 ]]; then
+  echo "${url} is working correctly"
 else
-  echo " "${url}" is not reachable, getting "${status_code}" response code "
-  failed_url_list["${url}"]="HTTP $status_code "
-fi
+  ##
+  if [[ ${status_code} -eq 0 ]];then
+  echo "Error loading $url -Please try again"
+  failed_url_list["${url}"]="Unreachable"   #Associative array, so storing value in key-value pair
+  else
 
+    case "${status_code}" in
+      3*) echo "Redirection $status_code for $url " ;;
+      4*) echo "Client error, getting $status_code for $url" ;;
+      5*) echo "Server error, getting $status_code for $url" ;;
+      *)  echo "$url is not reachable, getting $status_code" ;;
+    esac
+      failed_url_list["$url"]="HTTP $status_code"
+  fi
+fi
 done
 
 echo 
@@ -43,7 +42,7 @@ if [ "${#failed_url_list[@]}" -eq 0 ]; then
   echo "All urls are working correctly"
 else
   for i in "${!failed_url_list[@]}"; do
-      echo "$i"
+      echo "$i : ${failed_url_list[$i]}"
   done
 fi
 
