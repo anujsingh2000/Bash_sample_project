@@ -13,7 +13,7 @@ for url in ${url_list[@]}; do
 # using curl to get status code(silent,no output,only status code)
 status_code=$(curl -s -o /dev/null -w "%{http_code}" -f --connect-timeout 5 "${url}" 2>/dev/null) || status_code=0
 
-#Checking site status based on response code
+#Checking site status based on response code || Only 200 response code will mark as OK
 if [[ ${status_code} -eq 200 ]]; then
   echo "${url} is working correctly"
 else
