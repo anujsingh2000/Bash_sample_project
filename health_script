@@ -19,17 +19,9 @@ if [[ ${status_code} -eq 200 ]]; then
 else
   ##
   if [[ ${status_code} -eq 0 ]];then
-  echo "Error loading $url -Please try again"
-  failed_url_list["${url}"]="Unreachable"   #Associative array, so storing value in key-value pair
+    failed_url_list["${url}"]="Unreachable"   #Associative array, so storing value in key-value pair
   else
-
-    case "${status_code}" in
-      3*) echo "Redirection $status_code for $url " ;;
-      4*) echo "Client error, getting $status_code for $url" ;;
-      5*) echo "Server error, getting $status_code for $url" ;;
-      *)  echo "$url is not reachable, getting $status_code" ;;
-    esac
-      failed_url_list["$url"]="HTTP $status_code"
+    failed_url_list["$url"]="HTTP $status_code"
   fi
 fi
 done
