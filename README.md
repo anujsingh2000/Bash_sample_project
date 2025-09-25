@@ -28,10 +28,6 @@ Features:
 
 Count occurrences of error/warning messages
 
-Extract unique IPs accessing the server
-
-Show top N most frequent requests
-
 Run Example:
 
 ./log_analyzer.sh /var/log/syslog
@@ -43,42 +39,9 @@ A script that checks the health of multiple URLs.
 Features:
 
 Reads list of URLs
-
 Uses curl to check HTTP status codes
-
 Prints status (working if 200, otherwise logs failed URLs)
 
 Run Example:
 
 ./health_script
-
-4. 🌍 Environment Health Check (health_check_script)
-
-Checks URLs for different environments (e.g., Dev, UAT, Prod).
-
-Features:
-
-Accepts environment as input (e.g., UAT)
-
-Opens all environment-specific URLs to verify availability
-
-Helps in QA/DevOps validation tasks
-
-Run Example:
-
-./health_check_script UAT
-
-5. 📂 Script Generator (create_script.sh)
-
-A helper script that automates creating new Bash scripts with proper headers and permissions.
-
-Features:
-
-Creates a new .sh file with executable permissions
-
-Adds shebang (#!/bin/bash) and template structure automatically
-
-Run Example:
-
-./create_script.sh my_new_script.sh
-
