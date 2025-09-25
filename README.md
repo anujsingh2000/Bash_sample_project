@@ -14,7 +14,7 @@ A command-line task manager to add, list, and mark tasks as done.
 - Safely remove completed tasks using `awk` + `mktemp`  
 - Error handling for invalid inputs  
 
-**Run Example:**
+Run Example:
 ```bash
 ./todo.sh add "Learn Linux fundamentals"
 ./todo.sh list
