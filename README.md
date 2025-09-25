@@ -20,18 +20,3 @@ A command-line task manager to add, list, and mark tasks as done.
 ./todo.sh list
 ./todo.sh done 1
 
-
-### 2. 🌐 Health Check Script (health_script)
-
-A script that checks the health of multiple URLs.
-
-Features:
-
-Reads list of URLs
-
-Uses curl to check HTTP status codes
-
-Prints status (working if 200, otherwise logs failed URLs)
-
-**Run Example:**
-./health_script
