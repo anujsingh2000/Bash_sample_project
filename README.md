@@ -17,30 +17,28 @@ A command-line task manager to add, list, and mark tasks as done.
 Run Example:
 
 ./todo.sh add "Learn Linux fundamentals"
-./todo.sh list
+./todo.sh list  
 ./todo.sh done 1
 
-2. 📊 Log Analyzer (log_analyzer.sh)
 
+### 2. ✅ Log Analyzer
 A script to analyze and extract useful information from server logs.
 
-Features:
-
-Count occurrences of error/warning messages
+**Features:**
+- Count occurrences of error/warning messages
 
 Run Example:
 
 ./log_analyzer.sh /var/log/syslog
 
-3. 🌐 Health Check Script (health_script)
 
+### 3. ✅🌐 Health Check script
 A script that checks the health of multiple URLs.
 
-Features:
-
-Reads list of URLs
-Uses curl to check HTTP status codes
-Prints status (working if 200, otherwise logs failed URLs)
+**Features:**
+- Reads list of URLs
+- Uses curl to check HTTP status codes  
+- Prints status (working if 200, otherwise logs failed URLs)  
 
 Run Example:
 
