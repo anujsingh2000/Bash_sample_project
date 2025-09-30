@@ -68,7 +68,7 @@ case "$cmd" in
             exit 1
         fi
 
-        #takes the $num-th line from the tasks file and saves its full text into task_test variable 
+        #takes the $num-th line from the tasks file and saves its full text into task_test variable~ 
         task_test=$(sed -n "${num}p" "$task_file")
 
         #remove line safely using temp file
